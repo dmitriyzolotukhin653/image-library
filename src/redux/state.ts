@@ -15,7 +15,7 @@ import { rootReducer } from "./rootReducer";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["gallery"],
+  blacklist: ["gallery"],
   storage,
 };
 

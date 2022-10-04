@@ -79,7 +79,15 @@ const AddImageModal: FC<AddImageModalProps> = ({ open = true, onClose }) => {
         <FileUpload
           label="Image"
           name="image"
-          rules={[{ required: true, message: "Image is requried" }]}
+          rules={[
+            { required: true, message: "Image is requried" },
+            {
+              validator: async (rule, value) => {
+                if (!(value instanceof File)) return "Error uploading the file";
+                if (value.size > 250000) return "Image size exceeded 250 mb";
+              },
+            },
+          ]}
           accept=".png,.jpg,.jpeg"
           onError={onFileError}
           onBeforeUpload={onBeforeUploadFile}

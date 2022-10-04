@@ -4,17 +4,21 @@ import { IImage, ImageOperationData } from "../../api/types";
 
 interface GalleryState {
   images: Array<IImage>;
+  currentPage: number;
+  searchString: string;
 }
 
 const initialState: GalleryState = {
   images: [],
+  currentPage: 1,
+  searchString: ''
 };
 
 const gallerySlice = createSlice({
   name: "gallery",
   reducers: {
     addImage: (state, action: PayloadAction<ImageOperationData>) => {
-      state.images.push({ id: state.images.length, ...action.payload });
+      state.images.push({ id: new Date().getTime(), ...action.payload });
     },
     editImage: (state, action: PayloadAction<Partial<ImageOperationData>>) => {
       const id = action.payload.id;
@@ -38,10 +42,17 @@ const gallerySlice = createSlice({
           ...state.images.slice(imageToDeleteIndex + 1),
         ];
     },
+    changePage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+    changeSearchString: (state, action: PayloadAction<string>) => {
+      state.searchString = action.payload;
+    },
   },
   initialState,
 });
 
-export const { addImage, editImage, deleteImage } = gallerySlice.actions;
+export const { addImage, editImage, deleteImage, changePage, changeSearchString } =
+  gallerySlice.actions;
 
 export default gallerySlice.reducer;

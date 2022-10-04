@@ -1,11 +1,15 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 
-import { imagesSelector } from "../../redux/selectors/gallery.selectors";
+import {
+  imagesSelector,
+  visibleImagesSelector,
+} from "../../redux/selectors/gallery.selectors";
 import ImageCard from "./ImageCard";
+import GalleryPagination from "./GalleryPagination";
 
 const Gallery: FC = () => {
-  const images = useSelector(imagesSelector);
+  const images = useSelector(visibleImagesSelector);
 
   return (
     <div className="gallery">
@@ -14,6 +18,7 @@ const Gallery: FC = () => {
           <ImageCard image={image} key={image.id} />
         ))}
       </div>
+      <GalleryPagination />
     </div>
   );
 };

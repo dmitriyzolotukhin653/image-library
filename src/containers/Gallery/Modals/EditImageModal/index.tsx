@@ -81,6 +81,14 @@ const EditImageModal: FC<EditImageModalProps> = ({ image, onClose }) => {
         <FileUpload
           label="Image"
           className={changeImage ? "" : "edit-image-modal__hidden-image"}
+          rules={[
+            {
+              validator: async (rule, value) => {
+                if (!(value instanceof File)) return "Error uploading the file";
+                if (value.size > 250000) return "Image size exceeded 250 mb";
+              },
+            },
+          ]}
           name="image"
           accept=".png,.jpg,.jpeg"
           onError={onFileError}
