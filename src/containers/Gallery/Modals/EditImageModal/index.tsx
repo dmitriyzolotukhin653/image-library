@@ -8,7 +8,7 @@ import { Button, Form, Input, Modal, Typography } from "antd";
 import { toBase64 } from "../../../../utils/toBase64";
 import { editImage } from "../../../../redux/slices/gallery.slice";
 import FileUpload from "../../../../components/FileUpload";
-import { AddImageModalFormProps } from "../AddImageModal";
+import { ImageModalFormProps } from "../types";
 
 type EditImageModalProps = {
   image: IImage;
@@ -21,7 +21,7 @@ const EditImageModal: FC<EditImageModalProps> = ({ image, onClose }) => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const [form] = Form.useForm<AddImageModalFormProps>();
+  const [form] = Form.useForm<ImageModalFormProps>();
 
   const onBeforeUploadFile = useCallback(() => {
     form.setFields([{ name: "image", errors: [] }]);
@@ -33,21 +33,22 @@ const EditImageModal: FC<EditImageModalProps> = ({ image, onClose }) => {
     [form]
   );
 
-  const handleFormSubmit: FormProps<AddImageModalFormProps>["onFinish"] =
-    async (data) => {
-      setConfirmLoading(true);
-      const base64Image = data.image ? await toBase64(data.image) : null;
-      dispatch(
-        editImage({
-          id: image.id,
-          title: data.title,
-          ...(base64Image ? { base64Image } : {}),
-          ...(data.description ? { description: data.description } : {}),
-        })
-      );
-      setConfirmLoading(false);
-      onClose();
-    };
+  const handleFormSubmit: FormProps<ImageModalFormProps>["onFinish"] = async (
+    data
+  ) => {
+    setConfirmLoading(true);
+    const base64Image = data.image ? await toBase64(data.image) : null;
+    dispatch(
+      editImage({
+        id: image.id,
+        title: data.title,
+        ...(base64Image ? { base64Image } : {}),
+        ...(data.description ? { description: data.description } : {}),
+      })
+    );
+    setConfirmLoading(false);
+    onClose();
+  };
 
   return (
     <Modal

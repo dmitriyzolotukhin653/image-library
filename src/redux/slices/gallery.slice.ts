@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IImage } from "../../api/types";
+import { IImage, ImageOperationData } from "../../api/types";
 
 interface GalleryState {
   images: Array<IImage>;
@@ -8,13 +8,6 @@ interface GalleryState {
 
 const initialState: GalleryState = {
   images: [],
-};
-
-type ImageOperationData = {
-  id?: number;
-  title: string;
-  base64Image: string;
-  description?: string;
 };
 
 const gallerySlice = createSlice({

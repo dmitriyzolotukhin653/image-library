@@ -7,16 +7,11 @@ import FileUpload from "../../../../components/FileUpload";
 import { AppDispatch } from "../../../../redux/state";
 import { addImage } from "../../../../redux/slices/gallery.slice";
 import { toBase64 } from "../../../../utils/toBase64";
+import { ImageModalFormProps } from "../types";
 
 type AddImageModalProps = {
   open?: boolean;
   onClose: () => void;
-};
-
-export type AddImageModalFormProps = {
-  title: string;
-  image: File | null;
-  description?: string;
 };
 
 const AddImageModal: FC<AddImageModalProps> = ({ open = true, onClose }) => {
@@ -24,7 +19,7 @@ const AddImageModal: FC<AddImageModalProps> = ({ open = true, onClose }) => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const [form] = Form.useForm<AddImageModalFormProps>();
+  const [form] = Form.useForm<ImageModalFormProps>();
 
   const onBeforeUploadFile = useCallback(() => {
     form.setFields([{ name: "image", errors: [] }]);
@@ -36,21 +31,22 @@ const AddImageModal: FC<AddImageModalProps> = ({ open = true, onClose }) => {
     [form]
   );
 
-  const handleFormSubmit: FormProps<AddImageModalFormProps>["onFinish"] =
-    async (data) => {
-      if (!data.image) return;
-      setConfirmLoading(true);
-      const base64Image = await toBase64(data.image);
-      dispatch(
-        addImage({
-          base64Image,
-          title: data.title,
-          ...(data.description ? { description: data.description } : {}),
-        })
-      );
-      setConfirmLoading(false);
-      onClose();
-    };
+  const handleFormSubmit: FormProps<ImageModalFormProps>["onFinish"] = async (
+    data
+  ) => {
+    if (!data.image) return;
+    setConfirmLoading(true);
+    const base64Image = await toBase64(data.image);
+    dispatch(
+      addImage({
+        base64Image,
+        title: data.title,
+        ...(data.description ? { description: data.description } : {}),
+      })
+    );
+    setConfirmLoading(false);
+    onClose();
+  };
 
   return (
     <Modal
@@ -64,7 +60,6 @@ const AddImageModal: FC<AddImageModalProps> = ({ open = true, onClose }) => {
         layout="horizontal"
         initialValues={{ remember: true }}
         onFinish={handleFormSubmit}
-        onFinishFailed={(error) => console.log("error: ", error)}
         labelAlign="right"
         labelCol={{ span: 5 }}
         autoComplete="off"
