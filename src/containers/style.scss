@@ -1,0 +1,77 @@
+.app-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gallery {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1024px;
+
+  &__images {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    display: grid;
+    justify-content: center;
+    grid-template-rows: repeat(auto-fill, 235px);
+    grid-template-columns: repeat(auto-fill, 250px);
+    grid-auto-rows: 250px;
+    grid-auto-columns: 250px;
+    grid-gap: 16px;
+
+    margin: 0 -12px;
+
+    &__card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      & .ant-card-body {
+        display: flex;
+        flex-direction: column;
+        padding: 6px 12px;
+
+        & .ant-image {
+          max-height: 100px;
+          overflow: hidden;
+        }
+      }
+
+      &__controls {
+        & > *:first-child {
+          margin-right: 6px;
+        }
+      }
+      & p {
+        margin: 4px 0 0;
+        word-break: break-all;
+      }
+    }
+  }
+}
+
+.edit-image-modal {
+  &__hidden-image {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    margin: 0;
+    border-width: 0;
+    padding: 0;
+  }
+
+  &__change-image-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
